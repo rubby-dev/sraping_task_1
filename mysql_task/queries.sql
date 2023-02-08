@@ -20,19 +20,20 @@ AND grommet_product_keywords.keyword = "Hair accessor";
 
 # 3rd query
 
-SELECT 
-  p.product_name, 
-  p.product_img_url, 
-  p.product_url, 
-  p.product_price_min, 
-  p.product_short_description
-FROM 
-  grommet_products p 
-  LEFT JOIN grommet_product_categories pc ON p.id = pc.product_id 
-  LEFT JOIN grommet_gifts_categories gc ON pc.product_category_id = gc.id 
-  LEFT JOIN grommet_product_to_keyword pk ON p.id = pk.product_id 
-  LEFT JOIN grommet_product_keywords k ON pk.keyword_id = k.id 
-WHERE 
-  (gc.sub_category = 'Beauty & Personal Care' OR gc.sub_category = 'Skincare' 
-  OR k.keyword = 'Aromatherapy') 
-  AND p.is_sold_out != 'yes';
+SELECT DISTINCT
+    p.product_name,
+    p.product_img_url,
+    p.product_url,
+    p.product_price_min,
+    p.product_short_description
+FROM
+grommet_products p
+JOIN grommet_product_categories pc ON p.id = pc.product_id
+JOIN grommet_gifts_categories gc ON pc.product_category_id = gc.id
+LEFT JOIN grommet_product_to_keyword pk ON p.id = pk.product_id
+LEFT JOIN grommet_product_keywords k ON pk.keyword_id = k.id
+WHERE
+(gc.sub_category = 'Beauty & Personal Care' OR gc.sub_category = 'Skincare'
+OR k.keyword = 'Aromatherapy')
+AND p.is_sold_out = 0
+ORDER BY p.product_name;
